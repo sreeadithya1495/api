@@ -13,7 +13,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load JSON using absolute path (works on Vercel)
+# Use absolute path to load JSON file
 current_dir = os.path.dirname(os.path.abspath(__file__))
 json_path = os.path.join(current_dir, "q-vercel-python.json")
 
