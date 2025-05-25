@@ -13,8 +13,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load the marks database from JSON file
-with open("q-vercel-python.json", "r") as f:
+# Load JSON using absolute path (works on Vercel)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+json_path = os.path.join(current_dir, "q-vercel-python.json")
+
+with open(json_path, "r") as f:
     data = json.load(f)
     marks_db = {entry["name"]: entry["marks"] for entry in data}
 
