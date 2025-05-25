@@ -18,5 +18,7 @@ with open('q-vercel-python.json') as f:
     marks_db = {item['name']: item['marks'] for item in marks_data}  # Update keys based on your JSON structure
 
 @app.get("/api")
-async def get_marks(names: list[str] = Query(...)):
+async def get_marks(names: list[str] = Query(None)):  # Makes parameter optional
+    if not names:
+        return {"marks": []}
     return {"marks": [marks_db.get(name, 0) for name in names]}
