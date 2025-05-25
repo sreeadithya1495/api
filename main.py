@@ -1,32 +1,23 @@
-from fastapi import FastAPI, Query, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import json
+import os
 
 app = FastAPI()
 
-# Enable CORS
+# Enable CORS for all origins
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_methods=["GET"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Load JSON data exactly as provided
-with open('q-vercel-python.json') as f:
-    students = json.load(f)  # Loads your array of {name, marks} objects
+# Load the marks database from JSON file
+with open("q-vercel-python.json", "r") as f:
+    data = json.load(f)
+    marks_db = {entry["name"]: entry["marks"] for entry in data}
 
 @app.get("/api")
-async def get_marks(names: list[str] = Query(...)):
-    results = []
-    for name in names:
-        found = False
-        for student in students:  # Search through all students
-            if student["name"] == name:
-                results.append(student["marks"])
-                found = True
-                break
-        if not found:
-            results.append(0)  # Return 0 if name not found
-    
-    return {"marks": results}
+def get_marks(name: list[str] = []):
+    return {"marks": [marks_db.get(n, None) for n in name]}
