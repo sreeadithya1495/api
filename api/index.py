@@ -1,7 +1,5 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import json
-import os
 
 app = FastAPI()
 
@@ -13,13 +11,112 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Use absolute path to load JSON file
-current_dir = os.path.dirname(os.path.abspath(__file__))
-json_path = os.path.join(current_dir, "q-vercel-python.json")
+# Embedded data (paste the full list here)
+data = [
+    {"name":"6pjl9mtFMM","marks":27},
+    {"name":"95imo","marks":36},
+    {"name":"StJEQ028","marks":83},
+    {"name":"1x","marks":69},
+    {"name":"PdfOBi","marks":83},
+    {"name":"9U","marks":93},
+    {"name":"9bkdxqh","marks":82},
+    {"name":"XgGSo","marks":18},
+    {"name":"QgBFVcQm","marks":94},
+    {"name":"l","marks":71},
+    {"name":"euU2dbdS","marks":66},
+    {"name":"RPcBC","marks":91},
+    {"name":"cSwJ","marks":55},
+    {"name":"U3mT","marks":56},
+    {"name":"gsbOMuv","marks":79},
+    {"name":"TfC","marks":31},
+    {"name":"uOWV0KjzXD","marks":19},
+    {"name":"CM","marks":41},
+    {"name":"t3bLk","marks":78},
+    {"name":"zfTGfHg","marks":58},
+    {"name":"bnu","marks":78},
+    {"name":"HX","marks":61},
+    {"name":"X0BpV","marks":8},
+    {"name":"yDcf0C","marks":70},
+    {"name":"vkk7Gzu2J","marks":92},
+    {"name":"iDIBaW2","marks":60},
+    {"name":"RaI","marks":16},
+    {"name":"KB8YNHem6E","marks":92},
+    {"name":"fYz0T9t","marks":80},
+    {"name":"6TP3zxU","marks":57},
+    {"name":"PLbF","marks":48},
+    {"name":"Td51","marks":92},
+    {"name":"sFtoD","marks":86},
+    {"name":"T4","marks":63},
+    {"name":"PEpc","marks":43},
+    {"name":"Qp6zvsJoCI","marks":78},
+    {"name":"bKLB","marks":89},
+    {"name":"xg3YDgRn","marks":35},
+    {"name":"2tA","marks":11},
+    {"name":"Qcv","marks":50},
+    {"name":"kn","marks":28},
+    {"name":"G7pCmb","marks":20},
+    {"name":"bX","marks":11},
+    {"name":"3K","marks":66},
+    {"name":"oXLKpVuZ","marks":39},
+    {"name":"5MgMQQt","marks":56},
+    {"name":"PrFQxf","marks":72},
+    {"name":"54QIed1","marks":11},
+    {"name":"xmJCtQta","marks":97},
+    {"name":"K207cVH","marks":93},
+    {"name":"3qEFSU8","marks":23},
+    {"name":"W2ueIVjp","marks":31},
+    {"name":"9","marks":37},
+    {"name":"P5ldi4g","marks":74},
+    {"name":"nvLyG3G","marks":8},
+    {"name":"Lz4SvWk8","marks":16},
+    {"name":"cjdrRO","marks":89},
+    {"name":"uA","marks":13},
+    {"name":"igENN","marks":2},
+    {"name":"ZOKCDt1b","marks":86},
+    {"name":"vnV37vY","marks":36},
+    {"name":"8Su3","marks":54},
+    {"name":"S","marks":84},
+    {"name":"hFPXe","marks":54},
+    {"name":"wNivnf8wi","marks":61},
+    {"name":"CnFebQTIL0","marks":48},
+    {"name":"4nC","marks":66},
+    {"name":"9G","marks":62},
+    {"name":"ZTXR","marks":61},
+    {"name":"gmn4","marks":49},
+    {"name":"KR","marks":60},
+    {"name":"XJj9UBk","marks":96},
+    {"name":"bVg8qf3","marks":26},
+    {"name":"32EcaT","marks":96},
+    {"name":"yzTsG","marks":95},
+    {"name":"x","marks":60},
+    {"name":"BYca7MhGx","marks":55},
+    {"name":"lLsS4","marks":35},
+    {"name":"ay","marks":27},
+    {"name":"jHxEp5h2H","marks":75},
+    {"name":"F","marks":95},
+    {"name":"QHNF6I","marks":8},
+    {"name":"9ZMc6B","marks":31},
+    {"name":"BTiYYUvZE5","marks":73},
+    {"name":"m","marks":71},
+    {"name":"HJ9zOrYRIn","marks":82},
+    {"name":"kKoMwwqd4","marks":13},
+    {"name":"AmRJKfsXsi","marks":30},
+    {"name":"lLtGRY","marks":53},
+    {"name":"JEhsChMc","marks":64},
+    {"name":"9Z2Unx","marks":45},
+    {"name":"vuzoJJ","marks":30},
+    {"name":"odvY1L0BzL","marks":3},
+    {"name":"n","marks":44},
+    {"name":"RQKBC","marks":1},
+    {"name":"ccuTXZrW3j","marks":14},
+    {"name":"94q0El","marks":89},
+    {"name":"MYY","marks":60},
+    {"name":"0u","marks":70},
+    {"name":"kuMoOJ","marks":57}
+]
 
-with open(json_path, "r") as f:
-    data = json.load(f)
-    marks_db = {entry["name"]: entry["marks"] for entry in data}
+# Create a fast lookup table
+marks_db = {entry["name"]: entry["marks"] for entry in data}
 
 @app.get("/api")
 def get_marks(name: list[str] = []):
