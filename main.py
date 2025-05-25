@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import json
 
@@ -12,13 +12,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load marks from JSON
+# Load JSON data exactly as provided
 with open('q-vercel-python.json') as f:
-    marks_data = json.load(f)
-    marks_db = {item['name']: item['marks'] for item in marks_data}  # Update keys based on your JSON structure
+    students = json.load(f)  # Loads your array of {name, marks} objects
 
 @app.get("/api")
-async def get_marks(names: list[str] = Query(None)):  # Makes parameter optional
-    if not names:
-        return {"marks": []}
-    return {"marks": [marks_db.get(name, 0) for name in names]}
+async def get_marks(names: list[str] = Query(...)):
+    results = []
+    for name in names:
+        found = False
+        for student in students:  # Search through all students
+            if student["name"] == name:
+                results.append(student["marks"])
+                found = True
+                break
+        if not found:
+            results.append(0)  # Return 0 if name not found
+    
+    return {"marks": results}
